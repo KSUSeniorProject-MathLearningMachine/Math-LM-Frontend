@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Contributing
 To add a new feature, please branch off of development branch with a new feature branch. The development branch should remain stable.
 
-All new features will be built into src/lib. Each page or major set of features will be a separate module composed of components, services, and additional information needed (constants, interfaces, enumerators, etc.)
+All new features will be built into src/lib. Each page or major set of features will be a separate module composed of components, services, and additional information needed (constants, interfaces, enumerators, etc.). It is hugely helpful to use the Angular CLI to generate every new module/components/service/etc. as it will create all the file you need as well as linking them together (see Code scaffolding section).
 
 To contribute to this repository, you will need Node.js (https://nodejs.org/en/download/) and the Angular CLI (https://cli.angular.io/)
 
