@@ -2,6 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
+## Contributing
+To add new feature, please branch off of development branch with a new feature branch. The development branch should remain stable.
+
+All new features will be built into src/lib. Each page or major set of features will be a separate module composed of components, services, and additional information needed (constants, interfaces, enumerators, etc.)
+
+To contribute to this repository, you will need Node.js (https://nodejs.org/en/download/) and the Angular CLI (https://cli.angular.io/)
+
+This app will be developed using: 
+* Angular 10
+* Typescript 4 (sorry Python users, only strongly typed languages here)
+* SCSS (Following the BEM styling standard http://getbem.com/naming/)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
