@@ -1,0 +1,12 @@
+.app-photo-capture{
+    &__video-feed {
+        height: 100%;
+        width: 100%;
+    }
+
+    &__capture-button {
+        position: absolute;
+        bottom: 2rem;
+        left: calc(50% - 52px);
+    }
+}

@@ -1,0 +1,14 @@
+<div class="container vh-100">
+    <div class="d-flex flex-column align-items-center">
+        <div class="p-1">
+            <video #video class="app-photo-capture__video-feed" autoplay></video>
+        </div>
+        <div class="pb-2">
+            <button mat-fab theme="" color="primary" class="app-photo-capture__capture-button"
+                (click)="capture()"></button>
+        </div>
+    </div>
+    <div class="p-1">
+        <canvas #canvas class="app-photo-capture__video-feed"></canvas>
+    </div>
+</div>
