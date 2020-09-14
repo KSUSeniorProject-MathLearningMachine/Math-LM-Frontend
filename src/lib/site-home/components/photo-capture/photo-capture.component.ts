@@ -31,12 +31,15 @@ export class PhotoCaptureComponent implements OnInit {
   }
 
   startCamera() {
-    if (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
-      navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError);
-    } else {
+    console.log("called");
+    if ((navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+      navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError.bind(this));
+    }
+     else {
       alert('Sorry, camera not available.');
     }
   }
+
 
   attachVideo(stream) {
     this.renderer.setProperty(this.videoElement.nativeElement, 'srcObject', stream);
@@ -48,6 +51,8 @@ export class PhotoCaptureComponent implements OnInit {
 
   handleError(error) {
     console.log('Error: ', error);
+    alert('Sorry, camera not available.');
+    this.startCamera();
   }
 
   capture() {

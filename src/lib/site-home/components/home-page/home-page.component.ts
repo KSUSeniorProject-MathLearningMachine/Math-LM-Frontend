@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomePageService} from '../../services/home-page.service';
 
 @Component({
   selector: 'app-home-page',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  homePageState = this.homepageservice.getState();
 
-  constructor() { }
+  constructor(private homepageservice:HomePageService) { }
 
   ngOnInit(): void {
+  }
+
+  startTakingPhoto(){
+    this.homepageservice.updateState({takingPhoto:true});
   }
 
 }

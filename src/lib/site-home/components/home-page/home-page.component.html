@@ -1,1 +1,11 @@
-<app-photo-capture></app-photo-capture>
+<div *ngIf="homePageState|async as State">
+    <div *ngIf="!State.takingPhoto">
+    James is best teacher.
+    <Button (click)="startTakingPhoto()"> </Button>
+    
+    </div>
+
+
+
+<app-photo-capture *ngIf="State.takingPhoto"></app-photo-capture>
+</div>
