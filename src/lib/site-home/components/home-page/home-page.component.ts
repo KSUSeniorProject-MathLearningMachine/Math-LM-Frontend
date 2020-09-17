@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { HomePageService } from '../../services/home-page/home-page.service';
 import { MathLearningMachineApiService } from '../../services/math-learning-machine-api/math-learning-machine-api.service';
+import { iSolvedImage } from '../../interfaces/home-page.interface';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+  styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit {
   homePageState = this.homePageService.getState();
 
-  constructor(private homePageService: HomePageService, private mathLearningMachineApiService: MathLearningMachineApiService) { }
+  constructor(
+    private homePageService: HomePageService,
+    private mathLearningMachineApiService: MathLearningMachineApiService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   startTakingPhoto() {
     this.homePageService.setTakingPhoto(true);
@@ -21,14 +24,15 @@ export class HomePageComponent implements OnInit {
 
   sendImage(imageData) {
     this.mathLearningMachineApiService.solveImage(imageData).subscribe({
-      next: (res) => {
+      next: (res: iSolvedImage) => {
         console.log(res);
+        this.homePageService.setSolutionData(res);
         this.homePageService.setTakingPhoto(false);
       },
       error: (e) => {
         console.log(e);
         this.homePageService.setTakingPhoto(false);
-      }
+      },
     });
     this.homePageService.setTakingPhoto(false);
   }

@@ -1,14 +1,46 @@
 <div class="app-photo-capture">
-    <video #video [class]="!(photoCaptured | async)? 'app-photo-capture__video-feed' : 'app-photo-capture__hidden'"
-        autoplay></video>
-    <button mat-fab theme="" color="primary"
-        [class]="!(photoCaptured | async)? 'app-photo-capture__capture-button' : 'app-photo-capture__hidden'"
-        (click)="capture()">
+  <video
+    #video
+    [class]="
+      !(photoCaptured | async)
+        ? 'app-photo-capture__video-feed'
+        : 'app-photo-capture__hidden'
+    "
+    autoplay
+  ></video>
+  <button
+    mat-fab
+    [class]="
+      !(photoCaptured | async)
+        ? 'app-photo-capture__capture-button'
+        : 'app-photo-capture__hidden'
+    "
+    (click)="capture()"
+  ></button>
+  <canvas
+    #canvas
+    [class]="
+      (photoCaptured | async)
+        ? 'app-photo-capture__photo'
+        : 'app-photo-capture__hidden'
+    "
+  ></canvas>
+  <div *ngIf="photoCaptured | async" class="app-photo-capture__button-group">
+    <button
+      mat-raised-button
+      class="app-photo-capture__button"
+      color="warn"
+      (click)="retake()"
+    >
+      Retake
     </button>
-    <canvas #canvas
-        [class]="(photoCaptured | async)? 'app-photo-capture__photo' : 'app-photo-capture__hidden'"></canvas>
-    <div *ngIf="photoCaptured | async">
-        <button mat-button color="primary" (click)="retake()">Retake</button>
-        <button mat-button color="primary" (click)="acceptImage()">Accept</button>
-    </div>
+    <button
+      mat-raised-button
+      class="app-photo-capture__button"
+      color="primary"
+      (click)="acceptImage()"
+    >
+      Accept
+    </button>
+  </div>
 </div>

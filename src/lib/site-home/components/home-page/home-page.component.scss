@@ -1,0 +1,26 @@
+.home-page {
+  &__title {
+    text-align: center;
+  }
+
+  &__description {
+    max-width: 80rem;
+    margin: auto;
+    text-align: center;
+  }
+
+  &__capture-button {
+    margin: auto;
+  }
+
+  &__button-container {
+    margin: 5rem 0;
+    display: flex;
+  }
+
+  &__card-container {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+}
