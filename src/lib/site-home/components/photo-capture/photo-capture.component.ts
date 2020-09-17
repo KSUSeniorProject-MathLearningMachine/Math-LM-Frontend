@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -6,10 +6,10 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './photo-capture.component.html',
   styleUrls: ['./photo-capture.component.scss']
 })
-export class PhotoCaptureComponent implements OnInit {
-  @ViewChild('video', { static: true }) videoElement: ElementRef;
-  @ViewChild('canvas', { static: true }) canvas: ElementRef;
-  @Output() imageData = new EventEmitter<string>();
+export class PhotoCaptureComponent implements AfterViewInit {
+  @ViewChild('video', { static: false }) videoElement: ElementRef;
+  @ViewChild('canvas', { static: false }) canvas: ElementRef;
+  @Output() imageDataUpdated = new EventEmitter<string>();
 
   constraints: object = {
     video: {
@@ -22,11 +22,11 @@ export class PhotoCaptureComponent implements OnInit {
   videoHeight: number = 0;
   videoWidth: number = 0;
 
-  photoCaptureState = new BehaviorSubject<boolean>(false);
+  photoCaptured = new BehaviorSubject<boolean>(false);
 
   constructor(private renderer: Renderer2) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
     this.startCamera();
   }
 
@@ -35,7 +35,7 @@ export class PhotoCaptureComponent implements OnInit {
     if ((navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
       navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError.bind(this));
     }
-     else {
+    else {
       alert('Sorry, camera not available.');
     }
   }
@@ -59,11 +59,15 @@ export class PhotoCaptureComponent implements OnInit {
     this.renderer.setProperty(this.canvas.nativeElement, 'width', this.videoWidth);
     this.renderer.setProperty(this.canvas.nativeElement, 'height', this.videoHeight);
     this.canvas.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
-    this.photoCaptureState.next(true);
+    this.photoCaptured.next(true);
+  }
+
+  retake() {
+    this.photoCaptured.next(false);
   }
 
   acceptImage() {
     const canvasElement = this.canvas.nativeElement as HTMLCanvasElement;
-    this.imageData.emit(canvasElement.toDataURL());
+    this.imageDataUpdated.emit(canvasElement.toDataURL());
   }
 }

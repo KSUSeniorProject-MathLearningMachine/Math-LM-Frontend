@@ -1,11 +1,14 @@
-<div *ngIf="homePageState|async as State">
-    <div *ngIf="!State.takingPhoto">
-    James is best teacher.
-    <Button (click)="startTakingPhoto()"> </Button>
-    
+<div *ngIf="homePageState|async as state">
+    <div *ngIf="!state.takingPhoto">
+        <h2>MLM</h2>
+        <h1 class="home-page__title">Math Learning Machine</h1>
+        <p class="home-page__description">A tool that harnesses the power of Machine Learning and Optical Character
+            recognition to solve hand written
+            math problems, both simple and complex. Just write it out and snap a picture!</p>
+
+        <button class="home-page__capture-button" (click)="startTakingPhoto()">Capture</button>
+        <p>Created by Grant Williams, James Mann, Raj Kapadia, Spencer Brown, and Steven Kemp *in order of the alphabet,
+            not of importance*</p>
     </div>
-
-
-
-<app-photo-capture *ngIf="State.takingPhoto"></app-photo-capture>
+    <app-photo-capture *ngIf="state.takingPhoto" (imageDataUpdated)="sendImage($event)"></app-photo-capture>
 </div>
