@@ -12,10 +12,10 @@ export class HomePageComponent implements OnInit {
   homePageState = this.homePageService.getState();
   fileUploadService: any;
   fileToUpload: File = null;
-  
+
   constructor(
     private homePageService: HomePageService,
-    private mathLearningMachineApiService: MathLearningMachineApiService,
+    private mathLearningMachineApiService: MathLearningMachineApiService
   ) {}
 
   ngOnInit(): void {}

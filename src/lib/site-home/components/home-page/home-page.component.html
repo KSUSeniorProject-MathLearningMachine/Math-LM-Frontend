@@ -19,9 +19,10 @@
       </button>
       <div>
       <button type="button" (click)="fileInput.click()"
-      mat-raised-button
-      color="primary"
-      class="home-page__upload-button">
+        mat-raised-button
+        color="primary"
+        class="home-page__upload-button"
+      >
         <span>Upload</span>
       <input #fileInput type="file"  (change)="handleFileInput($event.target.files)" style="display:none;" />
       </button>
@@ -34,13 +35,13 @@
       <div class="app-card">
         <div class="app-card__content">
           <h3>Detected Input:</h3>
-          <p>{{ state.solutionData.input_detected }}</p>
+          <math-jax [content]="'$$ ' + state.solutionData.input_detected + ' $$'"></math-jax>
         </div>
       </div>
       <div class="app-card">
         <div class="app-card__content">
           <h3>Solution:</h3>
-          <p>{{ state.solutionData.solved }}</p>
+          <math-jax [content]="'$$ ' + state.solutionData.solved + ' $$'"></math-jax>
         </div>
       </div>
       <div class="app-card">

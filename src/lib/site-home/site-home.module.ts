@@ -7,9 +7,11 @@ import { MatCardModule } from '@angular/material/card';
 import { ErrorModalComponent } from './components/error-modal/error-modal/error-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MathJaxComponent } from './components/math-jax/math-jax/math-jax.component';
+import { GlobalService } from 'src/app/global.service';
 
 @NgModule({
-  declarations: [HomePageComponent, PhotoCaptureComponent, ErrorModalComponent],
+  declarations: [HomePageComponent, PhotoCaptureComponent, ErrorModalComponent, MathJaxComponent],
   exports: [HomePageComponent, PhotoCaptureComponent],
   imports: [
     CommonModule,
@@ -18,5 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatDialogModule,
     BrowserAnimationsModule,
   ],
+  providers: [GlobalService]
 })
 export class SiteHomeModule {}
