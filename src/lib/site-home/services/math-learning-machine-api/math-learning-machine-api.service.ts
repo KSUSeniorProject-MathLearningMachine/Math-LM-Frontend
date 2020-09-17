@@ -9,6 +9,6 @@ export class MathLearningMachineApiService {
   constructor(private httpClient: HttpClient) { }
 
   solveImage(imageData: string): Observable<any> {
-    return this.httpClient.post('/solve-image', { b64_img: imageData.substring(22) });
+    return this.httpClient.post('/solve-image', { b64_img: imageData });
   }
 }
