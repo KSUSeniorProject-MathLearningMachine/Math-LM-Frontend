@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HomePageService} from '../../services/home-page.service';
+import { HomePageService } from '../../services/home-page/home-page.service';
+import { MathLearningMachineApiService } from '../../services/math-learning-machine-api/math-learning-machine-api.service';
 
 @Component({
   selector: 'app-home-page',
@@ -7,15 +8,28 @@ import { HomePageService} from '../../services/home-page.service';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  homePageState = this.homepageservice.getState();
+  homePageState = this.homePageService.getState();
 
-  constructor(private homepageservice:HomePageService) { }
+  constructor(private homePageService: HomePageService, private mathLearningMachineApiService: MathLearningMachineApiService) { }
 
   ngOnInit(): void {
   }
 
-  startTakingPhoto(){
-    this.homepageservice.updateState({takingPhoto:true});
+  startTakingPhoto() {
+    this.homePageService.setTakingPhoto(true);
   }
 
+  sendImage(imageData) {
+    this.mathLearningMachineApiService.solveImage(imageData).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.homePageService.setTakingPhoto(false);
+      },
+      error: (e) => {
+        console.log(e);
+        this.homePageService.setTakingPhoto(false);
+      }
+    });
+    this.homePageService.setTakingPhoto(false);
+  }
 }

@@ -1,14 +1,14 @@
-<div class="container vh-100">
-    <div class="d-flex flex-column align-items-center">
-        <div class="p-1">
-            <video #video class="app-photo-capture__video-feed" autoplay></video>
-        </div>
-        <div class="pb-2">
-            <button mat-fab theme="" color="primary" class="app-photo-capture__capture-button"
-                (click)="capture()"></button>
-        </div>
-    </div>
-    <div class="p-1">
-        <canvas #canvas class="app-photo-capture__video-feed"></canvas>
+<div class="app-photo-capture">
+    <video #video [class]="!(photoCaptured | async)? 'app-photo-capture__video-feed' : 'app-photo-capture__hidden'"
+        autoplay></video>
+    <button mat-fab theme="" color="primary"
+        [class]="!(photoCaptured | async)? 'app-photo-capture__capture-button' : 'app-photo-capture__hidden'"
+        (click)="capture()">
+    </button>
+    <canvas #canvas
+        [class]="(photoCaptured | async)? 'app-photo-capture__photo' : 'app-photo-capture__hidden'"></canvas>
+    <div *ngIf="photoCaptured | async">
+        <button mat-button color="primary" (click)="retake()">Retake</button>
+        <button mat-button color="primary" (click)="acceptImage()">Accept</button>
     </div>
 </div>
