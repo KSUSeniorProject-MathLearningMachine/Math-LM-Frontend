@@ -12,11 +12,11 @@ export class HomePageService {
   defaultStateStatus = {
     takingPhoto: false,
     solutionData: {
-      confidence: '.99',
-      input_detected: 'yeeahw',
-      solved: 'asdfasdf',
+      confidence: '0',
+      input_detected: '',
+      solved: '',
     },
-    showOutput: true,
+    showOutput: false,
   };
   homePageState = new BehaviorSubject<iHomePageState>(this.defaultStateStatus);
 
