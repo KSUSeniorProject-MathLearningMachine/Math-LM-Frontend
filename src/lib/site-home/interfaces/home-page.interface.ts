@@ -9,3 +9,9 @@ export interface iSolvedImage {
   input_detected: string;
   solved: string;
 }
+
+export interface iModalAction {
+  text: string;
+  type: 'Primary' | 'Subtle' | 'Cancel';
+  value: string;
+}

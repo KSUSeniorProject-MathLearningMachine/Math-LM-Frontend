@@ -1,4 +1,4 @@
-<div *ngIf="homePageState | async as state">
+<div *ngIf="homePageState | async as state" class="home-page">
   <div *ngIf="!state.takingPhoto">
     <h2>MLM</h2>
     <h1 class="home-page__title">Math Learning Machine</h1>
@@ -7,6 +7,7 @@
       recognition to solve hand written math problems, both simple and complex.
       Just write it out and snap a picture!
     </p>
+    <img class="home-page__image" src="https://www.pngrepo.com/png/135814/180/professor.png">
     <div class="home-page__button-container">
       <button
         mat-raised-button
@@ -39,12 +40,14 @@
     </div>
     <p>
       Created by Grant Williams, James Mann, Raj Kapadia, Spencer Brown, and
-      Steven Kemp *in order of the alphabet, not of importance*
+      Steven Kemp <br>
+      <span class="home-page__orange">*in order of the alphabet, not of importance*</span>
     </p>
   </div>
 
   <app-photo-capture
     *ngIf="state.takingPhoto"
     (imageDataUpdated)="sendImage($event)"
+    (canceled)="cancelPhotoCapture()"
   ></app-photo-capture>
 </div>
