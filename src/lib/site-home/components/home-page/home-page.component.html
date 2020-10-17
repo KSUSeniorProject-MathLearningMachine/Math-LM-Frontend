@@ -17,6 +17,18 @@
       >
         Capture
       </button>
+      <div>
+      <button type="button" (click)="fileInput.click()"
+      mat-raised-button
+      color="primary"
+      class="home-page__upload-button">
+        <span>Upload</span>
+      <input #fileInput type="file"  (change)="handleFileInput($event.target.files)" style="display:none;" />
+      </button>
+      </div>
+    
+
+      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
     </div>
     <div class="home-page__card-container" *ngIf="state.showOutput">
       <div class="app-card">

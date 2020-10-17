@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "math-learning-machine"
+    }
+  },
+  "defaultProject": "math-learning-machine",
+  "cli": {
+    "analytics": "a79fcc1a-cf89-497d-84de-cd159ec765ba"
+  }
 }

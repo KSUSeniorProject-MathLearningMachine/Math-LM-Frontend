@@ -15,10 +15,18 @@
   }
 
   &__capture-button {
-    margin: auto;
+    
+    align-self: center;
+    margin-right: 5rem;
+  }
+
+  &__upload-button {
+    margin-right: auto;
+    align-self: center;
   }
 
   &__button-container {
+    justify-content: center;
     margin: 5rem 0;
     display: flex;
   }
