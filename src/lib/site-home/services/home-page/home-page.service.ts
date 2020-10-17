@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   iHomePageState,
   iSolvedImage,
@@ -19,6 +19,7 @@ export class HomePageService {
     showOutput: false,
   };
   homePageState = new BehaviorSubject<iHomePageState>(this.defaultStateStatus);
+  httpClient: any;
 
   getState() {
     return this.homePageState.asObservable();
@@ -27,6 +28,12 @@ export class HomePageService {
   updateState(newState) {
     const currState = this.homePageState.getValue();
     this.homePageState.next({ ...currState, ...newState });
+  }
+
+
+
+  handleError(e: any) {
+    throw new Error('Method not implemented.');
   }
 
   setTakingPhoto(value: boolean) {

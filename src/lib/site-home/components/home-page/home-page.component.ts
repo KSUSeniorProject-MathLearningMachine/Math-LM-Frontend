@@ -10,7 +10,9 @@ import { iSolvedImage } from '../../interfaces/home-page.interface';
 })
 export class HomePageComponent implements OnInit {
   homePageState = this.homePageService.getState();
-
+  fileUploadService: any;
+  fileToUpload: File = null;
+  
   constructor(
     private homePageService: HomePageService,
     private mathLearningMachineApiService: MathLearningMachineApiService,
@@ -20,6 +22,26 @@ export class HomePageComponent implements OnInit {
 
   startTakingPhoto() {
     this.homePageService.setTakingPhoto(true);
+  }
+
+  handleFileInput(files){
+    console.log(files);
+    this.fileToUpload = files.item(0);
+    if(this.fileToUpload.type == "image/png"){
+      if (files && files[0]) {
+
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+          console.log(e);
+          this.sendImage(e.target.result);
+        }.bind(this));
+
+        FR.readAsDataURL(files[0]);
+      }
+
+    }
+    else (alert("Only .PNG or files are accepted"));
+  
   }
 
   sendImage(imageData) {
