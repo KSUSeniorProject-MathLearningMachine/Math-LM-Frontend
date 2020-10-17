@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ViewChild,
   ElementRef,
   Renderer2,
@@ -9,6 +8,8 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorModalComponent } from '../error-modal/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-photo-capture',
@@ -19,6 +20,7 @@ export class PhotoCaptureComponent implements AfterViewInit {
   @ViewChild('video', { static: false }) videoElement: ElementRef;
   @ViewChild('canvas', { static: false }) canvas: ElementRef;
   @Output() imageDataUpdated = new EventEmitter<string>();
+  @Output() canceled = new EventEmitter();
 
   constraints: object = {
     video: {
@@ -33,21 +35,28 @@ export class PhotoCaptureComponent implements AfterViewInit {
 
   photoCaptured = new BehaviorSubject<boolean>(false);
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, public dialog: MatDialog) {}
 
   ngAfterViewInit() {
     this.startCamera();
   }
 
   startCamera() {
-    console.log('called');
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia(this.constraints)
         .then(this.attachVideo.bind(this))
         .catch(this.handleError.bind(this));
     } else {
-      alert('Sorry, camera not available.');
+      this.openDialog(`
+        <p>Try one of the following:</p>
+        <ul>
+          <li>Verify that your camera/webcam is working</li>
+          <li>Make sure no other applications are using your camera</li>
+          <li>Check your firewall permissions</li>
+          <li>Upload your image instead</li>
+        </ul>
+      `);
     }
   }
 
@@ -64,8 +73,31 @@ export class PhotoCaptureComponent implements AfterViewInit {
   }
 
   handleError(error) {
-    alert(error);
-    this.startCamera();
+    if(error.name === 'NotAllowedError'){
+      this.openDialog(`
+      <h4>Access Was Denied. Please take one following steps:</h4>
+      <ul>
+        <li>Clear your permissions for this page in your browser and select <br> allow next time
+          <a href="https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=en">
+            (Chrome Instructions Here)
+          </a>
+        </li>
+        <li>Check your firewall permissions</li>
+      </ul>
+    `);
+    }
+    else {
+      this.openDialog(`
+      <p>Try one of the following:</p>
+      <ul>
+        <li>Verify that your camera/webcam is working</li>
+        <li>Make sure no other applications are using your camera</li>
+        <li>Check your firewall permissions</li>
+        <li>Upload your image instead</li>
+      </ul>
+      `);
+    }
+    console.log(error);
   }
 
   capture() {
@@ -92,5 +124,36 @@ export class PhotoCaptureComponent implements AfterViewInit {
   acceptImage() {
     const canvasElement = this.canvas.nativeElement as HTMLCanvasElement;
     this.imageDataUpdated.emit(canvasElement.toDataURL());
+  }
+
+  openDialog(bodyContent: string) {
+    const dialogRef = this.dialog.open(ErrorModalComponent);
+    let instance = dialogRef.componentInstance;
+    instance.headerContent = "Uh Oh! We can't seem to access your camera.";
+    instance.bodyContent = bodyContent;
+    instance.buttons = [
+      {
+        text: 'Cancel',
+        type: 'Subtle',
+        value: 'cancel',
+      },
+      {
+        text: 'Try Again',
+        type: 'Primary',
+        value: 'retry',
+      },
+    ];
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result === 'retry'){
+        this.startCamera();
+      }
+      else if(result === 'cancel'){
+        this.cancel();
+      }
+    });
+  }
+
+  cancel(){
+    this.canceled.emit();
   }
 }

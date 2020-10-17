@@ -13,7 +13,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private homePageService: HomePageService,
-    private mathLearningMachineApiService: MathLearningMachineApiService
+    private mathLearningMachineApiService: MathLearningMachineApiService,
   ) {}
 
   ngOnInit(): void {}
@@ -34,6 +34,10 @@ export class HomePageComponent implements OnInit {
         this.homePageService.setTakingPhoto(false);
       },
     });
+    this.homePageService.setTakingPhoto(false);
+  }
+
+  cancelPhotoCapture(){
     this.homePageService.setTakingPhoto(false);
   }
 }

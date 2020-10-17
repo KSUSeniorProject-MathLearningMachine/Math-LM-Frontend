@@ -1,0 +1,17 @@
+<h1
+  class="error-modal-component__header"
+  [innerHTML]="headerContent"
+  mat-dialog-title
+></h1>
+<mat-dialog-content [innerHTML]="bodyContent" class="mat-typography">
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div *ngFor="let button of buttons">
+    <button class="error-modal-component__button" mat-button *ngIf="button.type == 'Primary'" color="primary" [mat-dialog-close]="button.value" mat-raised-button>
+      {{ button.text }}
+    </button>
+    <button class="error-modal-component__button" *ngIf="button.type == 'Subtle'" [mat-dialog-close]="button.value" mat-button>
+      {{ button.text }}
+    </button>
+  </div>
+</mat-dialog-actions>
