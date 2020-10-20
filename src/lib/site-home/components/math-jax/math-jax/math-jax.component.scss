@@ -1,0 +1,8 @@
+.math-jax {
+  color: wheat;
+  font-size: 3rem;
+}
+
+:host ::ng-deep #MathJax_ZoomFrame {
+  display: none;
+}
