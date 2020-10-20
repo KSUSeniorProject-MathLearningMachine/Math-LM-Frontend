@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MathJaxComponent } from './components/math-jax/math-jax/math-jax.component';
 import { GlobalService } from 'src/app/global.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [HomePageComponent, PhotoCaptureComponent, ErrorModalComponent, MathJaxComponent],
@@ -19,6 +20,7 @@ import { GlobalService } from 'src/app/global.service';
     MatCardModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ],
   providers: [GlobalService]
 })

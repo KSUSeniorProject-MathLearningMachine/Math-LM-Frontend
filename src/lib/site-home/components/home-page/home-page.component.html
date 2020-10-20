@@ -1,7 +1,7 @@
-<div *ngIf="homePageState | async as state" class="home-page">
-  <div *ngIf="!state.takingPhoto">
-    <h2>MLM</h2>
-    <h1 class="home-page__title">Math Learning Machine</h1>
+<div *ngIf="homePageState | async as state" [class]="!state.loading? 'home-page':'home-page__flex' ">
+  <mat-spinner *ngIf="state.loading"></mat-spinner>
+  <div [class]="state.loading? 'home-page__hidden':'' " *ngIf="!state.takingPhoto">
+    <h1 class="home-page__title ">Math Learning Machine</h1>
     <p class="home-page__description">
       A tool that harnesses the power of Machine Learning and Optical Character
       recognition to solve hand written math problems, both simple and complex.
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <p>
+    <p class="home-page__footer">
       Created by Grant Williams, James Mann, Raj Kapadia, Spencer Brown, and
       Steven Kemp <br>
       <span class="home-page__orange">*in order of the alphabet, not of importance*</span>
@@ -60,6 +60,7 @@
 
   <app-photo-capture
     *ngIf="state.takingPhoto"
+    [class]="state.loading? 'home-page__hidden': '' "
     (imageDataUpdated)="sendImage($event)"
     (canceled)="cancelPhotoCapture()"
   ></app-photo-capture>

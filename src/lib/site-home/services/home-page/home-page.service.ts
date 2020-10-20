@@ -17,6 +17,7 @@ export class HomePageService {
       solved: '',
     },
     showOutput: false,
+    loading: false
   };
   homePageState = new BehaviorSubject<iHomePageState>(this.defaultStateStatus);
   httpClient: any;
@@ -28,9 +29,8 @@ export class HomePageService {
   updateState(newState) {
     const currState = this.homePageState.getValue();
     this.homePageState.next({ ...currState, ...newState });
+    console.log(this.homePageState);
   }
-
-
 
   handleError(e: any) {
     throw new Error('Method not implemented.');
@@ -42,5 +42,9 @@ export class HomePageService {
 
   setSolutionData(solutionData: iSolvedImage) {
     this.updateState({ solutionData, showOutput: true });
+  }
+
+  setLoadingState(loading: boolean) {
+    this.updateState({ loading });
   }
 }

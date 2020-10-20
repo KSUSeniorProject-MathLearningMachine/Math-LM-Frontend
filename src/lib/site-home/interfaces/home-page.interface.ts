@@ -2,6 +2,7 @@ export interface iHomePageState {
   takingPhoto: boolean;
   solutionData: iSolvedImage;
   showOutput: boolean;
+  loading: boolean;
 }
 
 export interface iSolvedImage {
