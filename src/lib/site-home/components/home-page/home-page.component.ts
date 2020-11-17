@@ -4,6 +4,10 @@ import { MathLearningMachineApiService } from '../../services/math-learning-mach
 import { iSolvedImage } from '../../interfaces/home-page.interface';
 import { ErrorModalComponent } from '../error-modal/error-modal/error-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs/operators';
+import { specialCharacters } from '../../constants/characters.constant';
+import { parse } from 'mathjs';
+import { debounce } from 'lodash';
 
 @Component({
   selector: 'app-home-page',
@@ -12,8 +16,12 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class HomePageComponent implements OnInit {
   homePageState = this.homePageService.getState();
-  fileUploadService: any;
   fileToUpload: File = null;
+  userInput: any;
+  showAnimation: boolean = false;
+  valid: boolean = true;
+  tooltipError: string = 'Hover to see syntax errors.';
+  characterMap = {};
 
   constructor(
     private homePageService: HomePageService,
@@ -21,36 +29,38 @@ export class HomePageComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.checkContent = debounce(this.checkContent, 500);
+    specialCharacters.forEach((operator) => {
+      this.characterMap[operator] = operator;
+    });
+  }
 
   startTakingPhoto() {
     this.homePageService.setTakingPhoto(true);
   }
 
-  handleFileInput(files){
-    console.log(files);
+  handleFileInput(files) {
     this.fileToUpload = files.item(0);
-    if(this.fileToUpload.type == "image/png"){
+    if (this.fileToUpload.type == 'image/png') {
       if (files && files[0]) {
-
         var FR = new FileReader();
-        FR.addEventListener("load", function (e) {
-          this.sendImage(e.target.result);
-        }.bind(this));
+        FR.addEventListener(
+          'load',
+          function (e) {
+            this.sendImage(e.target.result);
+          }.bind(this)
+        );
 
         FR.readAsDataURL(files[0]);
       }
-
-    }
-    else {
-      const headerContent = 
-      this.openDialog(
-        "File Type Not Supported.",
-        "<h4>Please upload a PNG file.</h4>",
-        "Back"
+    } else {
+      const headerContent = this.openDialog(
+        'File Type Not Supported.',
+        '<h4>Please upload a PNG file.</h4>',
+        'Back'
       );
-    };
-  
+    }
   }
 
   sendImage(imageData) {
@@ -61,7 +71,7 @@ export class HomePageComponent implements OnInit {
         this.homePageService.setSolutionData(res);
         this.homePageService.setTakingPhoto(false);
         this.homePageService.setLoadingState(false);
-        if(parseFloat(res.confidence) < .75) {
+        if (parseFloat(res.confidence) < 0.75) {
           this.openDialog(
             "We weren't very confident in our answer.",
             `
@@ -73,25 +83,49 @@ export class HomePageComponent implements OnInit {
                 <li>Avoid any extra busyness in the image</li>
               </ul>
             `,
-            "Ok"
+            'Ok'
           );
         }
       },
       error: (error) => {
-        console.log(error);
         this.homePageService.setTakingPhoto(false);
         this.homePageService.setLoadingState(false);
 
         this.openDialog(
-          "Uh Oh, We Are Having A Server Issue.",
+          'Uh Oh, We Are Having A Server Issue.',
           `<h4>${error.message}</h4>`,
-          "Back"
+          'Back'
         );
       },
     });
   }
 
-  cancelPhotoCapture(){
+  sendLatex(latex: string) {
+    this.homePageService.setLoadingState(true);
+    this.mathLearningMachineApiService
+      .solveLatex(latex)
+      .pipe(map((res) => res.solved))
+      .subscribe({
+        next: (output) => {
+          this.homePageService.setSolutionData({
+            input_detected: latex,
+            solved: output,
+            confidence: '1',
+          });
+          this.homePageService.setLoadingState(false);
+        },
+        error: (error) => {
+          this.homePageService.setLoadingState(false);
+          this.openDialog(
+            'Uh Oh, We Are Having A Server Issue.',
+            `<h4>${error.message}</h4>`,
+            'Back'
+          );
+        },
+      });
+  }
+
+  cancelPhotoCapture() {
     this.homePageService.setTakingPhoto(false);
   }
 
@@ -107,5 +141,55 @@ export class HomePageComponent implements OnInit {
         value: 'back',
       },
     ];
+  }
+
+  checkContent(input: any) {
+    this.userInput = input;
+    try {
+      input.split('').forEach((char) => {
+        if (!this.isAConstant(char) && !this.isAnOperator(char)) {
+          throw new Error("Unexpected character '" + char + "'");
+        }
+      });
+      if (input && !/\d/.test(input)) {
+        throw new Error('Problem should contain at least 1 number.');
+      }
+      parse(input);
+      this.valid = true;
+      this.tooltipError = '✅';
+      return true;
+    } catch (error) {
+      this.valid = false;
+      this.tooltipError = error.message;
+    }
+  }
+
+  solve(event) {
+    this.sleep(600).then(() => {
+      if (this.valid && this.userInput) {
+        this.sendLatex(this.userInput);
+      }
+    });
+    event.preventDefault();
+    let input = this.userInput;
+    this.showAnimation = true;
+    this.showAnimation = false;
+  }
+
+  isAConstant(potentialConst: string): boolean {
+    if (parseFloat(potentialConst) || parseFloat(potentialConst) === 0) {
+      return true;
+    }
+    if (potentialConst.toLowerCase() != potentialConst.toUpperCase()) {
+      return true;
+    }
+  }
+
+  isAnOperator(potentialOperator: string) {
+    return potentialOperator in this.characterMap;
+  }
+
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

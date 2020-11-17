@@ -52,6 +52,41 @@
     margin: auto;
   }
 
+  &__text-area {
+    opacity: 0.5;
+    font-size: 2rem;
+    align-self: center;
+    border-radius: 5px;
+    min-width: 30rem;
+    min-height: 10rem;
+    height: 10rem;
+    width: 30rem;
+    max-width: 70rem;
+    max-height: 30rem;
+    background: #7bf6ca;
+    margin-bottom: 5rem;
+  }
+
+  &__text-area--invalid {
+    opacity: 0.5;
+    font-size: 2rem;
+    align-self: center;
+    border-radius: 5px;
+    min-width: 30rem;
+    min-height: 10rem;
+    height: 10rem;
+    width: 30rem;
+    max-width: 70rem;
+    max-height: 30rem;
+    background: #dd9694;
+    margin-bottom: 5rem;
+  }
+
+  &__input-container {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__footer {
     text-align: center;
   }

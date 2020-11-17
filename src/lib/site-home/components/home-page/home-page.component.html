@@ -1,13 +1,22 @@
-<div *ngIf="homePageState | async as state" [class]="!state.loading? 'home-page':'home-page__flex' ">
+<div
+  *ngIf="homePageState | async as state"
+  [class]="!state.loading ? 'home-page' : 'home-page__flex'"
+>
   <mat-spinner *ngIf="state.loading"></mat-spinner>
-  <div [class]="state.loading? 'home-page__hidden':'' " *ngIf="!state.takingPhoto">
-    <h1 class="home-page__title ">Math Learning Machine</h1>
+  <div
+    [class]="state.loading ? 'home-page__hidden' : ''"
+    *ngIf="!state.takingPhoto"
+  >
+    <h1 class="home-page__title">Math Learning Machine</h1>
     <p class="home-page__description">
       A tool that harnesses the power of Machine Learning and Optical Character
       recognition to solve hand written math problems, both simple and complex.
       Just write it out and snap a picture!
     </p>
-    <img class="home-page__image" src="https://www.pngrepo.com/png/135814/180/professor.png">
+    <img
+      class="home-page__image"
+      src="https://www.pngrepo.com/png/135814/180/professor.png"
+    />
     <div class="home-page__button-container">
       <button
         mat-raised-button
@@ -18,49 +27,72 @@
         Capture
       </button>
       <div>
-      <button type="button" (click)="fileInput.click()"
-        mat-raised-button
-        color="primary"
-        class="home-page__upload-button"
-      >
-        <span>Upload</span>
-      <input #fileInput type="file"  (change)="handleFileInput($event.target.files)" style="display:none;" />
-      </button>
+        <button
+          type="button"
+          (click)="fileInput.click()"
+          mat-raised-button
+          color="primary"
+          class="home-page__upload-button"
+        >
+          <span>Upload</span>
+          <input
+            #fileInput
+            type="file"
+            (change)="handleFileInput($event.target.files)"
+            style="display: none"
+          />
+        </button>
       </div>
-    
-
       <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+    </div>
+    <div class="home-page__input-container">
+      <textarea
+        [class]="
+          valid ? 'home-page__text-area' : 'home-page__text-area--invalid'
+        "
+        placeholder="OR type your problem here and hit enter..."
+        ngModel
+        [matTooltip]="tooltipError"
+        (ngModelChange)="checkContent($event)"
+        (keydown.enter)="solve($event)"
+      ></textarea>
     </div>
     <div class="home-page__card-container" *ngIf="state.showOutput">
       <div class="app-card">
         <div class="app-card__content">
-          <h3>Detected Input:</h3>
-          <math-jax [content]="'$$ ' + state.solutionData.input_detected + ' $$'"></math-jax>
+          <h3>Input:</h3>
+          <math-jax
+            [content]="'$$ ' + state.solutionData.input_detected + ' $$'"
+          ></math-jax>
         </div>
       </div>
       <div class="app-card">
         <div class="app-card__content">
           <h3>Solution:</h3>
-          <math-jax [content]="'$$ ' + state.solutionData.solved + ' $$'"></math-jax>
+          <math-jax
+            [content]="'$$ ' + state.solutionData.solved + ' $$'"
+          ></math-jax>
         </div>
       </div>
-      <div class="app-card">
+      <!-- <div class="app-card">
         <div class="app-card__content">
           <h3>Confidence:</h3>
           <p>{{ state.solutionData.confidence }}</p>
         </div>
-      </div>
+      </div> -->
     </div>
     <p class="home-page__footer">
       Created by Grant Williams, James Mann, Raj Kapadia, Spencer Brown, and
-      Steven Kemp <br>
-      <span class="home-page__orange">*in order of the alphabet, not of importance*</span>
+      Steven Kemp <br />
+      <span class="home-page__orange"
+        >*in order of the alphabet, not of importance*</span
+      >
     </p>
   </div>
 
   <app-photo-capture
     *ngIf="state.takingPhoto"
-    [class]="state.loading? 'home-page__hidden': '' "
+    [class]="state.loading ? 'home-page__hidden' : ''"
     (imageDataUpdated)="sendImage($event)"
     (canceled)="cancelPhotoCapture()"
   ></app-photo-capture>

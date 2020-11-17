@@ -16,3 +16,7 @@ export interface iModalAction {
   type: 'Primary' | 'Subtle' | 'Cancel';
   value: string;
 }
+
+export interface iSolved {
+  solved: string;
+}
