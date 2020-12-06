@@ -37,6 +37,7 @@ export class HomePageComponent implements OnInit {
   }
 
   startTakingPhoto() {
+    this.openSupportedChars();
     this.homePageService.setTakingPhoto(true);
   }
 
@@ -191,5 +192,22 @@ export class HomePageComponent implements OnInit {
 
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  openSupportedChars() {
+    this.openDialog(
+      'Important',
+      `
+        <p>The following characters are currently supported for handwritten math:</p>
+        <ul>
+          <li>0-9</li>
+          <li>a-z</li>
+          <li>+</li>
+          <li>-</li>
+          <li>=</li>
+        </ul>
+      `,
+      'Ok'
+    );
   }
 }
