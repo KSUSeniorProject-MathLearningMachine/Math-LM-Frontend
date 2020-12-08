@@ -201,10 +201,11 @@ export class HomePageComponent implements OnInit {
         <p>The following characters are currently supported for handwritten math:</p>
         <ul>
           <li>0-9</li>
-          <li>a-z</li>
+          <li>Lowercase letters (except i, j, and t)</li>
           <li>+</li>
           <li>-</li>
           <li>=</li>
+          <li>( and )</li>
         </ul>
       `,
       'Ok'
