@@ -105,4 +105,16 @@
     justify-content: center;
     align-items: center;
   }
+
+  &__solution-image {
+    width: 60vw;
+    margin: auto;
+    display: block;
+  }
+}
+
+@media (max-device-width: 900px) {
+  .home-page__solution-image {
+    max-width: 90vw;
+  }
 }

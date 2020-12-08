@@ -15,9 +15,10 @@ export class HomePageService {
       confidence: '0',
       input_detected: '',
       solved: '',
+      image: '',
     },
     showOutput: false,
-    loading: false
+    loading: false,
   };
   homePageState = new BehaviorSubject<iHomePageState>(this.defaultStateStatus);
   httpClient: any;

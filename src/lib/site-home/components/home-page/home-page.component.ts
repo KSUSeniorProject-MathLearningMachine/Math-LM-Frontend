@@ -68,7 +68,6 @@ export class HomePageComponent implements OnInit {
     this.homePageService.setLoadingState(true);
     this.mathLearningMachineApiService.solveImage(imageData).subscribe({
       next: async (res: iSolvedImage) => {
-        console.log(res);
         this.homePageService.setSolutionData(res);
         this.homePageService.setTakingPhoto(false);
         this.homePageService.setLoadingState(false);
@@ -112,6 +111,7 @@ export class HomePageComponent implements OnInit {
             input_detected: latex,
             solved: output,
             confidence: '1',
+            image: '',
           });
           this.homePageService.setLoadingState(false);
         },
