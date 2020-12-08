@@ -9,6 +9,7 @@ export interface iSolvedImage {
   confidence: string;
   input_detected: string;
   solved: string;
+  image: string;
 }
 
 export interface iModalAction {
